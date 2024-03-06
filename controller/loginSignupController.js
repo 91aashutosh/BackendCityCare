@@ -4,9 +4,11 @@ var session = require("express-session");
 var cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
-
+const cors = require('cors');
 
 const Citizen = require("../models/citizen");
+
+app.use(cors());
 
 
 
