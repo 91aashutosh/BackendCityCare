@@ -27,6 +27,8 @@ router.post("/api-logout", function (req, res) {
   router.post("/api_verify_otp", loginSignupController.api_verify_otp);
   router.post("/api_citizen_registration", loginSignupController.api_citizen_registration)
   router.post("/api_citizen_login", loginSignupController.api_citizen_login);
+  router.post("/api_organization_registration", loginSignupController.api_organization_registration)
+  router.post("/api_organization_login", loginSignupController.api_organization_login);
 
 module.exports = router;
 
