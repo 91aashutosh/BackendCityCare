@@ -515,7 +515,7 @@ const api_citizen_registration = async (req, res) => {
 
   const api_citizen_login = async(req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = JSON.parse(JSON.stringify(req.body));
         const user = await Citizen.findOne({email: email, password: password});
 
         if(!user) {
