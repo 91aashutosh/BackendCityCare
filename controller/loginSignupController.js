@@ -90,9 +90,10 @@ const api_citizen_registration = async (req, res) => {
     //     return;
     //   }
       const auser = await Citizen.findOne({ mobile: req.body.mobile });
+      const buser = await Citizen.findOne({ email: req.body.email });
       console.log(auser);
       
-      if (auser) {
+      if (auser || buser) {
           res
           .status(200)
           .json({
