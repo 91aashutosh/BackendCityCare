@@ -95,7 +95,7 @@ const api_citizen_registration = async (req, res) => {
       
       if (auser || buser) {
           res
-          .status(200)
+          .status(404)
           .json({
             success: false,
             status: "failed",
@@ -489,7 +489,7 @@ const api_citizen_registration = async (req, res) => {
               });
 
 
-            res.json({
+            res.status(200).json({
               status: "success",
               message: "Register successfully",
               token: token,
