@@ -519,7 +519,7 @@ const api_citizen_registration = async (req, res) => {
         const user = await Citizen.findOne({email: email, password: password});
 
         if(!user) {
-            res.json({
+            res.status(404).json({
                 status: "failed",
                 message: "User doesn't exist",
               }); 
@@ -537,7 +537,7 @@ const api_citizen_registration = async (req, res) => {
             { token: token }
           );
 
-        res.json({
+        res.status(200).json({
           status: "success",
           message: "Login successfully",
           token: token,
