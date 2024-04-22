@@ -18,6 +18,8 @@ const complaintSchema = new Schema({
     },
     isActive: { type: Boolean, default: true },
   });
+
+  complaintSchema.set("timestamps", true);
   
   
   module.exports = mongoose.model("Complaint", complaintSchema);
