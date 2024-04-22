@@ -49,6 +49,8 @@ const citizenSchema = new Schema({
         type: String
     }
   });
+
+  citizenSchema.set("timestamps", true);
   
   
   module.exports = mongoose.model("Citizen", citizenSchema);
