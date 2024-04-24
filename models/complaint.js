@@ -3,18 +3,24 @@ const Schema = mongoose.Schema;
 
 const complaintSchema = new Schema({
     citizenId: { type: Schema.Types.ObjectId, ref: "Citizen" },
+    title: {type: String},
     status: { type: String },
     type: { type: String },
     description: { type: String },
     locationInfo: {
         latitude: Number,
         longitude: Number,
-        address: String
+        address: String,
+        pincode: String
     },
     media: [{type: String}],
     dateAndTime: {
         type: Date,
         default: new Date()
+    },
+    upVotes: {
+        type: Number,
+        default: 0
     },
     isActive: { type: Boolean, default: true },
   });
