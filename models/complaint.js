@@ -14,10 +14,6 @@ const complaintSchema = new Schema({
         pincode: String
     },
     media: [{type: String}],
-    dateAndTime: {
-        type: Date,
-        default: new Date()
-    },
     upVotes: {
         type: Number,
         default: 0

@@ -22,7 +22,6 @@ const create_new_complaint = async (req, res) => {
         pincode: pincode
       },
       media: mediaFiles,
-      dateAndTime: dateAndTime,
       isActive: true
     })
 
