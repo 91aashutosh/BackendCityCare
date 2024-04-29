@@ -6,7 +6,7 @@ const create_new_complaint = async (req, res) => {
     const { title, type, description, latitude, longitude, address, pincode } = req.body;
     var mediaFiles = new Array();
     for (var i = 0; i < req.files.length; i++) {
-      mediaFiles[i] = "media/" + req.files[i].filename;
+      mediaFiles[i] = "media/" + req.files[i].url;
     }
 
     const newComplaint  = new Complaint({
