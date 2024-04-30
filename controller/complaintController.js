@@ -39,8 +39,22 @@ const create_new_complaint = async (req, res) => {
   }
 }
 
+const delete_all_complaints = async (req, res) => {
+  try {
+    await Complaint.deleteMany({});
+    res.send({
+      status: "success",
+      message: "deleted all complaints"
+    })
+  }
+  catch(error) {
+    console.log("error", error);
+    res.send(error);
+  }
+}
 
 
 module.exports = {
-  create_new_complaint
+  create_new_complaint,
+  delete_all_complaints
 }
