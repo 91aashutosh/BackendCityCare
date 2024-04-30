@@ -9,6 +9,7 @@ const complaintRoute = require("./routes/complaintRoutes");
 connectDB();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(__dirname + "/public"));
 app.use(cors({origin: true, credentials: true}));
 app.use(
     "/",

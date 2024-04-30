@@ -5,10 +5,10 @@ var router = express.Router();
 const path = require("path");
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+  destination: function (req, file, cb) {
       cb(null, "public/media");
-    },
-    filename: function (req, file, cb) {
+  },                    
+  filename: function (req, file, cb) {
       const ext = path.extname(file.originalname);
       const sanitizedOriginalname = file.originalname.replace(/[^a-zA-Z0-9\-_.]/g, ''); // Remove spaces and special characters
   
@@ -32,7 +32,11 @@ const storage = multer.diskStorage({
   const auth = require("../middleware/auth");
   const controller = require("../controller/complaintController");
 
+<<<<<<< HEAD
   router.post('/create_new_complaint', auth, upload.array("files", 30), controller.create_new_complaint);
   router.delete('/delete_all_complaints', controller.delete_all_complaints);
+=======
+  router.post('/create_new_complaint', auth, upload.single("files"), controller.create_new_complaint);
+>>>>>>> b304468c097dad671073b6c7dcd2e82345d70827
 
   module.exports = router;
