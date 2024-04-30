@@ -13,7 +13,7 @@ const complaintSchema = new Schema({
         address: String,
         pincode: String
     },
-    media: [{type: String}],
+    media: {type: String},
     upVotes: {
         type: Number,
         default: 0

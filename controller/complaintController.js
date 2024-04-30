@@ -4,11 +4,12 @@ const create_new_complaint = async (req, res) => {
   try {
     let userId = req.userId;
     const { title, type, description, latitude, longitude, address, pincode } = req.body;
-    var mediaFiles = new Array();
-    for (var i = 0; i < req.files.length; i++) {
-      mediaFiles[i] = "media/" + req.files[i].url;
+    let mediaUrl = "";
+    if(req.file)
+    {
+      mediaUrl = "public/media/"+req.file.filename;
     }
-
+    console.log("req.file", req.file);
     const newComplaint  = new Complaint({
       citizenId: userId,
       title: title, 
@@ -21,7 +22,7 @@ const create_new_complaint = async (req, res) => {
         address: address,
         pincode: pincode
       },
-      media: mediaFiles,
+      media: mediaUrl,
       isActive: true
     })
 
