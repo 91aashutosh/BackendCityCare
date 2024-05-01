@@ -34,6 +34,8 @@ const storage = multer.diskStorage({
 
   router.post('/create_new_complaint', auth, upload.single("files"), controller.create_new_complaint);
   router.delete('/delete_all_complaints', controller.delete_all_complaints);
+  router.post('/api_all_complaints', auth, controller.api_all_complaints);
+  router.post('/api_my_complaints', auth, controller.api_my_complaints);
 
   module.exports = router;
   

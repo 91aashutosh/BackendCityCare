@@ -44,7 +44,7 @@ const delete_all_complaints = async (req, res) => {
   try {
     await Complaint.deleteMany({});
     res.send({
-      status: "success",
+      status: "success",  
       message: "deleted all complaints"
     })
   }
@@ -54,8 +54,82 @@ const delete_all_complaints = async (req, res) => {
   }
 }
 
+const api_all_complaints = async (req, res) => {
+  try {
+    let userId = req.userId;
+    let { searchQuery, filter, page = 1, limit = 10 } = req.body;
+    let query = {};
+
+    query.citizenId = { $ne: userId };
+    // Applying search query if provided
+    if (searchQuery) {
+      query.title = { $regex: searchQuery, $options: 'i' };
+    }
+
+    // Applying filter if provided
+    if (filter) {
+      if (filter.status) {
+        query.status = filter.status;
+      }
+      if (filter.category) {
+        query.category = filter.category;
+      }
+    }
+
+    // Fetching complaints with pagination, sorting by createdAt
+    const complaints = await Complaint.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.json(complaints);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+const api_my_complaints = async (req, res) => {
+  try {
+    let userId = req.userId;
+    let { searchQuery, filter, page = 1, limit = 10 } = req.body;
+    let query = {};
+
+    query.citizenId = userId;
+    // Applying search query if provided
+    if (searchQuery) {
+      query.title = { $regex: searchQuery, $options: 'i' };
+    }
+
+    // Applying filter if provided
+    if (filter) {
+      if (filter.status) {
+        query.status = filter.status;
+      }
+      if (filter.category) {
+        query.category = filter.category;
+      }
+    }
+
+    // Fetching complaints with pagination, sorting by createdAt
+    const complaints = await Complaint.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.json(complaints);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+
+
 
 module.exports = {
   create_new_complaint,
-  delete_all_complaints
+  delete_all_complaints,
+  api_all_complaints,
+  api_my_complaints
 }
