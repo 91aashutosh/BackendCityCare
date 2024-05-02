@@ -57,10 +57,13 @@ const delete_all_complaints = async (req, res) => {
 const api_all_complaints = async (req, res) => {
   try {
     let userId = req.userId;
-    let { searchQuery, filter, page = 1, limit = 10 } = req.body;
+    let { searchQuery, page = 1 } = req.body;
     let query = {};
 
-    query.citizenId = { $ne: userId };
+    console.log("req.body", req.body)
+    let limit = 10;
+    let filter = null;
+    // query.citizenId = { $ne: userId };
     // Applying search query if provided
     if (searchQuery) {
       query.title = { $regex: searchQuery, $options: 'i' };
@@ -80,9 +83,15 @@ const api_all_complaints = async (req, res) => {
     const complaints = await Complaint.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit).populate('citizenId');
 
-    res.json(complaints);
+      console.log("complaints", complaints)
+
+    res.json({
+      status: "Success",
+      complaints: complaints
+    });
+
   } catch (error) {
     console.log("error", error);
     res.status(500).send({ error: 'Internal Server Error' });
