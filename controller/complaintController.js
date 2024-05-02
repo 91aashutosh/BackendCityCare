@@ -57,7 +57,7 @@ const delete_all_complaints = async (req, res) => {
 const api_all_complaints = async (req, res) => {
   try {
     let userId = req.userId;
-    let { searchQuery, page = 1 } = req.body;
+    let { searchQuery, page } = req.body;
     let query = {};
 
     console.log("req.body", req.body)
@@ -85,11 +85,18 @@ const api_all_complaints = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit).populate('citizenId');
 
+      let lastPage;
+      if(complaints.length < 10)
+      {
+        lastPage = -1;
+      }
+
       console.log("complaints", complaints)
 
     res.json({
       status: "Success",
-      complaints: complaints
+      lastPage: lastPage,
+      complaints: complaints,
     });
 
   } catch (error) {
