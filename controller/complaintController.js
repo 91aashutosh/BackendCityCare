@@ -181,6 +181,46 @@ const api_all_complaints_organization = async (req, res) => {
   }
 }
 
+const api_all_complaints_organizationById = async (req, res) => {
+  try{
+    let complaintId = req.params.id;
+    const complaint = await Complaint.findOne({_id: complaintId})
+
+    if(!complaint)
+    {
+      res.status(404).json({
+        "status": false,
+        "message": "no complaint found"
+      })
+    }
+
+      res.status(200).json({
+        status: "Success",
+        complaint: complaint,
+      });    
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+}
+
+const api_update_status = async (req, res) => {
+  try {
+    let { status, message, complaintId } = req.body;
+
+    let data = await Complaint.findOneAndUpdate({ _id: complaintId }, { $set: { status: status, message: message }});
+
+    res.status(200).json({
+      "status": true,
+      "message": "status and message updated successfully"
+    })
+
+  }
+  catch(error) {
+
+  }
+}
+
 
 
 
@@ -189,5 +229,7 @@ module.exports = {
   delete_all_complaints,
   api_all_complaints,
   api_my_complaints,
-  api_all_complaints_organization
+  api_all_complaints_organization,
+  api_all_complaints_organizationById,
+  api_update_status
 }

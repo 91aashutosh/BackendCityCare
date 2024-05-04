@@ -5,6 +5,7 @@ const complaintSchema = new Schema({
     citizenId: { type: Schema.Types.ObjectId, ref: "Citizen" },
     title: {type: String},
     status: { type: String },
+    message: { type: String },
     type: { type: String },
     description: { type: String },
     locationInfo: {
