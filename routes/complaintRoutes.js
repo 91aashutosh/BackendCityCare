@@ -30,13 +30,14 @@ const storage = multer.diskStorage({
   
   const upload = multer({ storage: storage });
   const auth = require("../middleware/auth");
+  const orgauth = require("../middleware/orgAuth");
   const controller = require("../controller/complaintController");
 
   router.post('/create_new_complaint', auth, upload.single("files"), controller.create_new_complaint);
   router.delete('/delete_all_complaints', controller.delete_all_complaints);
   router.post('/api_all_complaints', auth, controller.api_all_complaints);
   router.post('/api_my_complaints', auth, controller.api_my_complaints);
-  router.post('/api_all_complaints_organization', auth, controller.api_all_complaints_organization);
+  router.post('/api_all_complaints_organization', orgauth, controller.api_all_complaints_organization);
 
   module.exports = router;
   

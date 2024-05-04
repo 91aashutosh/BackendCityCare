@@ -162,34 +162,14 @@ const api_all_complaints_organization = async (req, res) => {
     let { searchQuery, category } = req.body;
     let query = {};
 
-    // query.citizenId = userId;
     query.type = category;
 
     if (searchQuery) {
       query.title = { $regex: searchQuery, $options: 'i' };
     }
 
-    // if (filter) {
-    //   if (filter.status) {
-    //     query.status = filter.status;
-    //   }
-    //   if (filter.category) {
-    //     query.category = filter.category;
-    //   }
-    // }
-
     const complaints = await Complaint.find(query)
       .sort({ createdAt: -1 })
-
-      // let lastPage;
-      // if(complaints.length < 10)
-      // {
-      //   lastPage = -1;
-      // }
-      // else
-      // {
-      //   lastPage = page+1;
-      // }
 
       res.status(200).json({
         status: "Success",
