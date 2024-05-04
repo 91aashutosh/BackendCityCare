@@ -90,6 +90,10 @@ const api_all_complaints = async (req, res) => {
       {
         lastPage = -1;
       }
+      else
+      {
+        lastPage = page+1;
+      }
 
       console.log("complaints", complaints)
 
