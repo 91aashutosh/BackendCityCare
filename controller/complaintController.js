@@ -159,7 +159,7 @@ const api_my_complaints = async (req, res) => {
 const api_all_complaints_organization = async (req, res) => {
   try{
     let userId = req.userId;
-    let { searchQuery, type } = req.body;
+    let { searchQuery, category } = req.body;
     let query = {};
 
     // query.citizenId = userId;
