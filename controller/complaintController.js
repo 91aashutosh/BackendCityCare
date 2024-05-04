@@ -163,7 +163,7 @@ const api_all_complaints_organization = async (req, res) => {
     let query = {};
 
     // query.citizenId = userId;
-    query.type = type;
+    query.type = category;
 
     if (searchQuery) {
       query.title = { $regex: searchQuery, $options: 'i' };
