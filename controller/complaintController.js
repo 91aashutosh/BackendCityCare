@@ -303,6 +303,21 @@ const all_complaints_coordinates = async (req, res) => {
   }
 }
 
+const all_complaints_coordinates_category = async (req, res) => {
+  try{
+    let category = req.params.category;
+    let allComplaints = await Complaint.find({ type: category }).select({ locationInfo: 1, type: 1 });
+    res.status(200).json({
+      status: true,
+      allComplaints: allComplaints,
+    })
+  }
+  catch(error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+}
+
 module.exports = {
   create_new_complaint,
   delete_all_complaints,
@@ -311,5 +326,6 @@ module.exports = {
   api_all_complaints_organization,
   api_all_complaints_organizationById,
   api_update_status,
-  all_complaints_coordinates
+  all_complaints_coordinates,
+  all_complaints_coordinates_category
 }

@@ -41,6 +41,7 @@ const storage = multer.diskStorage({
   router.post('/api_all_complaints_organization/:id', orgauth, controller.api_all_complaints_organizationById);
   router.post('/api_update_status', orgauth, controller.api_update_status);
   router.post('/all_complaints_coordinates', controller.all_complaints_coordinates);
+  router.post('/all_complaints_coordinates_category/:category', controller.all_complaints_coordinates_category);
 
   module.exports = router;
   
