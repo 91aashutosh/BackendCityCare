@@ -184,7 +184,7 @@ const api_all_complaints_organization = async (req, res) => {
 const api_all_complaints_organizationById = async (req, res) => {
   try{
     let complaintId = req.params.id;
-    const complaint = await Complaint.findOne({_id: complaintId})
+    const complaint = await Complaint.findOne({_id: complaintId}).populate('citizenId')
 
     if(!complaint)
     {
