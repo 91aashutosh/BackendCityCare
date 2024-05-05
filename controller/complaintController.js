@@ -63,7 +63,7 @@ const api_all_complaints = async (req, res) => {
     console.log("req.body", req.body)
     let limit = 10;
     let filter = null;
-    // query.citizenId = { $ne: userId };
+    query.citizenId = { $ne: userId };
     // Applying search query if provided
     if (searchQuery) {
       query.title = { $regex: searchQuery, $options: 'i' };
