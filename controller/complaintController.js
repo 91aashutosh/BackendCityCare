@@ -217,7 +217,22 @@ const api_update_status = async (req, res) => {
 
   }
   catch(error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+}
 
+const all_complaints_coordinates = async (req, res) => {
+  try{
+    let allComplaints = await Complaint.find({}).select({ locationInfo: 1, type: 1 });
+    res.status(200).json({
+      status: true,
+      allComplaints: allComplaints,
+    })
+  }
+  catch(error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
   }
 }
 
@@ -231,5 +246,6 @@ module.exports = {
   api_my_complaints,
   api_all_complaints_organization,
   api_all_complaints_organizationById,
-  api_update_status
+  api_update_status,
+  all_complaints_coordinates
 }
