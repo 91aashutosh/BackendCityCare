@@ -134,7 +134,7 @@ const api_my_complaints = async (req, res) => {
     const complaints = await Complaint.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit).populate('citizenId');;
 
       let lastPage;
       if(complaints.length < 10)
