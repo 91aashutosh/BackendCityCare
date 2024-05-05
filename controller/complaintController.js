@@ -85,8 +85,40 @@ const api_all_complaints = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit).populate('citizenId');
 
+    let allNewComplaints = [];
+
+      for(let i=0;i<complaints.length;i++)
+      {
+        let updateElem = complaints[i].toObject();
+        if(updateElem.type == "Road Maintaince")
+        {
+          updateElem.categoryMedia = `public/media/road.jpeg`;
+        }
+        if(updateElem.type == "stray_animals")
+        {
+          updateElem.categoryMedia = `public/media/stray.jpeg`;
+        }
+        if(updateElem.type == "water")
+        {
+          updateElem.categoryMedia = `public/media/water.jpeg`;
+        }
+        if(updateElem.type == "sanitation")
+        {
+          updateElem.categoryMedia = `public/media/garbage.jpeg`;
+        }
+        if(updateElem.type == "garbage")
+        {
+          updateElem.categoryMedia = `public/media/garbage.jpeg`;
+        }
+        if(updateElem.type == "electricity")
+        {
+          updateElem.categoryMedia = `public/media/electricity.jpeg`;
+        }
+        allNewComplaints.push(updateElem);
+      }
+
       let lastPage;
-      if(complaints.length < 10)
+      if(allNewComplaints.length < 10)
       {
         lastPage = -1;
       }
@@ -95,12 +127,12 @@ const api_all_complaints = async (req, res) => {
         lastPage = page+1;
       }
 
-      console.log("complaints", complaints)
+      // console.log("complaints", complaints)
 
     res.status(200).json({
       status: "Success",
       lastPage: lastPage,
-      complaints: complaints,
+      complaints: allNewComplaints,
     });
 
   } catch (error) {
@@ -134,10 +166,43 @@ const api_my_complaints = async (req, res) => {
     const complaints = await Complaint.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(limit).populate('citizenId');;
+      .limit(limit).populate('citizenId');
+
+
+      let allNewComplaints = [];
+
+      for(let i=0;i<complaints.length;i++)
+      {
+        let updateElem = complaints[i].toObject();
+        if(updateElem.type == "Road Maintaince")
+        {
+          updateElem.categoryMedia = `public/media/road.jpeg`;
+        }
+        if(updateElem.type == "stray_animals")
+        {
+          updateElem.categoryMedia = `public/media/stray.jpeg`;
+        }
+        if(updateElem.type == "water")
+        {
+          updateElem.categoryMedia = `public/media/water.jpeg`;
+        }
+        if(updateElem.type == "sanitation")
+        {
+          updateElem.categoryMedia = `public/media/garbage.jpeg`;
+        }
+        if(updateElem.type == "garbage")
+        {
+          updateElem.categoryMedia = `public/media/garbage.jpeg`;
+        }
+        if(updateElem.type == "electricity")
+        {
+          updateElem.categoryMedia = `public/media/electricity.jpeg`;
+        }
+        allNewComplaints.push(updateElem);
+      }
 
       let lastPage;
-      if(complaints.length < 10)
+      if(allNewComplaints.length < 10)
       {
         lastPage = -1;
       }
@@ -149,7 +214,7 @@ const api_my_complaints = async (req, res) => {
       res.status(200).json({
         status: "Success",
         lastPage: lastPage,
-        complaints: complaints,
+        complaints: allNewComplaints,
       });
 
   } catch (error) {
@@ -237,9 +302,6 @@ const all_complaints_coordinates = async (req, res) => {
     res.status(500).send({ error: 'Internal Server Error' });
   }
 }
-
-
-
 
 module.exports = {
   create_new_complaint,
