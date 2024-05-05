@@ -115,19 +115,21 @@ const api_my_complaints = async (req, res) => {
     let { searchQuery, page } = req.body;
     let query = {};
 
+    let limit = 10;
+
     query.citizenId = userId;
     if (searchQuery) {
       query.title = { $regex: searchQuery, $options: 'i' };
     }
 
-    if (filter) {
-      if (filter.status) {
-        query.status = filter.status;
-      }
-      if (filter.category) {
-        query.category = filter.category;
-      }
-    }
+    // if (filter) {
+    //   if (filter.status) {
+    //     query.status = filter.status;
+    //   }
+    //   if (filter.category) {
+    //     query.category = filter.category;
+    //   }
+    // }
 
     const complaints = await Complaint.find(query)
       .sort({ createdAt: -1 })
