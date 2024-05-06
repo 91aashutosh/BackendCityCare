@@ -15,6 +15,7 @@ const complaintSchema = new Schema({
         pincode: String
     },
     media: {type: String},
+    upVotesCitizen: [{ type: Schema.Types.ObjectId, ref: "Citizen" }],
     upVotes: {
         type: Number,
         default: 0

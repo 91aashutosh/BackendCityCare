@@ -1,3 +1,4 @@
+const Citizen = require("../models/citizen");
 const Complaint = require("../models/complaint");
 const cloudinary = require('cloudinary').v2;
 
@@ -385,6 +386,46 @@ const homeComplaintList = async (req, res) => {
   }
 }
 
+const upVoteComplaint = async (req, res) => {
+  try {
+    let userId = req.userId;
+    let { complaintId } = req.body;
+
+    let complaint = await Complaint.findOne({ _id: complaintId });
+    let citizens = complaint.upVotesCitizen ? complaint.upVotesCitizen.map((citizenId) => citizenId.toString()) : [];
+    let oldUpvoteVal = complaint.upVotes;
+    let update;
+
+    if (!citizens.includes(userId.toString())) {
+      update = await Complaint.findOneAndUpdate(
+        { _id: complaintId },
+        { $push: { upVotesCitizen: userId }, $set: { upVotes: oldUpvoteVal + 1 } },
+        { new: true }
+      );
+      return res.status(200).send({
+        status: true,
+        message: "upvoted successfully",
+        upVoteData: update.upVotes
+      });
+    } else {
+      update = await Complaint.findOneAndUpdate(
+        { _id: complaintId },
+        { $pull: { upVotesCitizen: userId }, $set: { upVotes: oldUpvoteVal - 1 } },
+        { new: true }
+      );
+      return res.status(200).send({
+        status: true,
+        message: "downvoted successfully",
+        upVoteData: update.upVotes
+      });
+    }
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
   create_new_complaint,
   delete_all_complaints,
@@ -396,5 +437,6 @@ module.exports = {
   all_complaints_coordinates,
   all_complaints_coordinates_category,
   migrateMediaUrlsToCloudinary,
-  homeComplaintList
+  homeComplaintList,
+  upVoteComplaint
 }
