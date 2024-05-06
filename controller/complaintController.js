@@ -1,15 +1,43 @@
 const Complaint = require("../models/complaint");
+const cloudinary = require('cloudinary').v2;
+
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_SECRET_KEY
+});
 
 const create_new_complaint = async (req, res) => {
   try {
     let userId = req.userId;
     const { title, type, description, latitude, longitude, address, pincode } = req.body;
     let mediaUrl = "";
-    if(req.file)
-    {
-      mediaUrl = "public/media/"+req.file.filename;
-    }
-    console.log("req.file", req.file);
+
+        // if(req.file)
+    // {
+    //   mediaUrl = "public/media/"+req.file.filename;
+    // }
+    // console.log("req.file", req.file);
+
+    // Upload file to Cloudinary
+    const uploadPromise = new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream({ resource_type: 'auto' }, (error, result) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          console.log(result);
+          mediaUrl = result.secure_url;
+          resolve();
+        }
+      }).end(req.file.buffer);
+    });
+
+    // Wait for the upload to finish
+    await uploadPromise;
+
     const newComplaint  = new Complaint({
       citizenId: userId,
       title: title, 
@@ -24,7 +52,7 @@ const create_new_complaint = async (req, res) => {
       },
       media: mediaUrl,
       isActive: true
-    })
+    });
 
     let data = await newComplaint.save();
 
@@ -33,8 +61,7 @@ const create_new_complaint = async (req, res) => {
       message: "Complaint Created Successfully",
       data
     });
-  }
-  catch(error) {
+  } catch(error) {
     console.log("error", error);
     res.send(error);
   }
@@ -318,6 +345,29 @@ const all_complaints_coordinates_category = async (req, res) => {
   }
 }
 
+const migrateMediaUrlsToCloudinary = async (req, res) => {
+  try {
+    const complaints = await Complaint.find({}); 
+    for (let i=0;i<complaints.length;i++) {
+      if (complaints[i].media) { 
+        const oldMediaUrl = complaints[i].media;
+        const result = await cloudinary.uploader.upload(oldMediaUrl, { resource_type: 'auto' });
+        let updateVal = await Complaint.findOneAndUpdate({  _id: complaints[i]._id }, { $set: { media: result.secure_url } });
+        console.log(`Media migrated for complaint ${complaints[i]._id}`);
+      }
+    }
+
+    res.send({
+      status: true,
+      message: "Migration completed successfully"
+    })
+
+    console.log('Migration completed successfully');
+  } catch (error) {
+    console.error('Migration failed:', error);
+  }
+};
+
 module.exports = {
   create_new_complaint,
   delete_all_complaints,
@@ -327,5 +377,6 @@ module.exports = {
   api_all_complaints_organizationById,
   api_update_status,
   all_complaints_coordinates,
-  all_complaints_coordinates_category
+  all_complaints_coordinates_category,
+  migrateMediaUrlsToCloudinary
 }
