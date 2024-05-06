@@ -399,7 +399,7 @@ const upVoteComplaint = async (req, res) => {
     if (!citizens.includes(userId.toString())) {
       update = await Complaint.findOneAndUpdate(
         { _id: complaintId },
-        { $push: { upVotesCitizen: userId }, $set: { upVotes: oldUpvoteVal + 1 } },
+        { $set: { $push: { upVotesCitizen: userId }, $set: { upVotes: oldUpvoteVal + 1 } } },
         { new: true }
       );
       return res.status(200).send({
@@ -410,7 +410,7 @@ const upVoteComplaint = async (req, res) => {
     } else {
       update = await Complaint.findOneAndUpdate(
         { _id: complaintId },
-        { $pull: { upVotesCitizen: userId }, $set: { upVotes: oldUpvoteVal - 1 } },
+        { $set: { $pull: { upVotesCitizen: userId }, $set: { upVotes: oldUpvoteVal - 1 } } },
         { new: true }
       );
       return res.status(200).send({
