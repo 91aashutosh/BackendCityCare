@@ -225,6 +225,8 @@ const api_my_complaints = async (req, res) => {
         {
           updateElem.categoryMedia = `public/media/electricity.jpeg`;
         }
+
+        updateElem.myComplaint = true;
         allNewComplaints.push(updateElem);
       }
 
