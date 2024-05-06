@@ -368,6 +368,21 @@ const migrateMediaUrlsToCloudinary = async (req, res) => {
   }
 };
 
+const homeComplaintList = async (req, res) => {
+  try {
+    let homeComplaints = await Complaint.find({}).sort({ createdAt: -1 }).limit(4);
+    res.status(200).send({
+      status: true,
+      message: "all complaints for home page are fetched",
+      homeComplaints: homeComplaints
+    })
+  }
+  catch(error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+}
+
 module.exports = {
   create_new_complaint,
   delete_all_complaints,
@@ -378,5 +393,6 @@ module.exports = {
   api_update_status,
   all_complaints_coordinates,
   all_complaints_coordinates_category,
-  migrateMediaUrlsToCloudinary
+  migrateMediaUrlsToCloudinary,
+  homeComplaintList
 }

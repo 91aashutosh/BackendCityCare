@@ -48,6 +48,7 @@ const upload = multer({ storage: storage });
   router.post('/all_complaints_coordinates', controller.all_complaints_coordinates);
   router.post('/all_complaints_coordinates_category/:category', controller.all_complaints_coordinates_category);
   router.post('/migrateMediaUrlsToCloudinary', controller.migrateMediaUrlsToCloudinary);
+  router.post('/homeComplaintList', auth, controller.homeComplaintList);
 
   module.exports = router;
   
