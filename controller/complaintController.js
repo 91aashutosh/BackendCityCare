@@ -453,6 +453,33 @@ const api_complaint_category_count = async (req, res) => {
   }
 }
 
+const api_complaint_pincode_count = async (req, res) => {
+  try {
+    let aggregationResult = await Complaint.aggregate([
+      {
+        $group: {
+          _id: "$locationInfo.pincode",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const labels = aggregationResult.map(item => item._id);
+    const counts = aggregationResult.map(item => item.count);
+
+    res.status(200).send({
+      status: true,
+      message: "Count of complaints pincode-wise",
+      labels,
+      counts
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
   create_new_complaint,
   delete_all_complaints,
@@ -466,5 +493,6 @@ module.exports = {
   migrateMediaUrlsToCloudinary,
   homeComplaintList,
   upVoteComplaint,
-  api_complaint_category_count
+  api_complaint_category_count,
+  api_complaint_pincode_count
 }

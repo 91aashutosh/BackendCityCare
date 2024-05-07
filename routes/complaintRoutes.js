@@ -51,6 +51,7 @@ const upload = multer({ storage: storage });
   router.post('/homeComplaintList', controller.homeComplaintList);
   router.post('/upVoteComplaint', auth, controller.upVoteComplaint)
   router.post('/api_complaint_category_count', controller.api_complaint_category_count);
+  router.post('/api_complaint_pincode_count', controller.api_complaint_pincode_count);
 
   module.exports = router;
   
