@@ -115,7 +115,7 @@ const api_all_complaints = async (req, res) => {
       .limit(limit).populate('citizenId');
 
     let allNewComplaints = [];
-
+    const currentDate = new Date();
       for(let i=0;i<complaints.length;i++)
       {
         let updateElem = complaints[i].toObject();
@@ -204,7 +204,7 @@ const api_my_complaints = async (req, res) => {
 
 
       let allNewComplaints = [];
-
+      const currentDate = new Date();
       for(let i=0;i<complaints.length;i++)
       {
         let updateElem = complaints[i].toObject();
