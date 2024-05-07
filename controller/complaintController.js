@@ -340,7 +340,7 @@ const api_all_complaints_organizationById = async (req, res) => {
   try{
     let complaintId = req.params.id;
     const complaint = await Complaint.findOne({_id: complaintId}).populate('citizenId')
-
+    
     if(!complaint)
     {
       res.status(404).json({
@@ -349,9 +349,28 @@ const api_all_complaints_organizationById = async (req, res) => {
       })
     }
 
+    let updateElem = complaint.toObject();
+    const currentDate = new Date();
+    const createdAt = new Date(complaint.createdAt);
+        const diffTime = Math.abs(currentDate - createdAt);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        const formattedCreatedAt = createdAt.toLocaleString('en-GB', { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false
+        }).replace(/,/g, '');
+
+        updateElem.diffDays = diffDays; 
+        updateElem.createdAt = formattedCreatedAt;
+
+
       res.status(200).json({
         status: "Success",
-        complaint: complaint,
+        complaint: updateElem,
       });    
   } catch (error) {
     console.log("error", error);
