@@ -300,10 +300,36 @@ const api_all_complaints_organization = async (req, res) => {
     const complaints = await Complaint.find(query)
       .sort({ createdAt: -1 })
 
+
+      let allNewComplaints = [];
+      const currentDate = new Date();
+      for(let i=0;i<complaints.length;i++)
+      {
+        let updateElem = complaints[i].toObject();
+        const createdAt = new Date(complaints[i].createdAt);
+        const diffTime = Math.abs(currentDate - createdAt);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        const formattedCreatedAt = createdAt.toLocaleString('en-GB', { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false
+        }).replace(/,/g, '');
+
+        updateElem.diffDays = diffDays; 
+        updateElem.createdAt = formattedCreatedAt;
+        updateElem.myComplaint = true;
+        allNewComplaints.push(updateElem);
+      }
+
       res.status(200).json({
         status: "Success",
-        complaints: complaints,
+        complaints: allNewComplaints,
       });    
+
   } catch (error) {
     console.log("error", error);
     res.status(500).send({ error: 'Internal Server Error' });
