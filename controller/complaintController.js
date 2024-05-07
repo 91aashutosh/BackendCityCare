@@ -1,5 +1,6 @@
 const Citizen = require("../models/citizen");
 const Complaint = require("../models/complaint");
+const Alert = require("../models/alert");
 const cloudinary = require('cloudinary').v2;
 
 
@@ -488,6 +489,19 @@ const api_complaint_pincode_count = async (req, res) => {
   }
 };
 
+const create_alert = async (req, res) => {
+  try {
+    let { pincode, message } = req.body;
+    const newAlert = new Alert({ pincode, message });
+    await newAlert.save();
+    res.status(200).json({ success: true, message: 'Alert saved successfully' });
+  }
+  catch(error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });    
+  }
+}
+
 
 module.exports = {
   create_new_complaint,
@@ -503,5 +517,6 @@ module.exports = {
   homeComplaintList,
   upVoteComplaint,
   api_complaint_category_count,
-  api_complaint_pincode_count
+  api_complaint_pincode_count,
+  create_alert
 }
