@@ -147,7 +147,18 @@ const api_all_complaints = async (req, res) => {
         const createdAt = new Date(complaints[i].createdAt);
         const diffTime = Math.abs(currentDate - createdAt);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        const formattedCreatedAt = createdAt.toLocaleString('en-GB', { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false
+        }).replace(/,/g, '');
+
         updateElem.diffDays = diffDays; 
+        updateElem.createdAt = formattedCreatedAt;
         allNewComplaints.push(updateElem);
       }
 
@@ -236,8 +247,18 @@ const api_my_complaints = async (req, res) => {
         const createdAt = new Date(complaints[i].createdAt);
         const diffTime = Math.abs(currentDate - createdAt);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        updateElem.diffDays = diffDays; 
 
+        const formattedCreatedAt = createdAt.toLocaleString('en-GB', { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false
+        }).replace(/,/g, '');
+
+        updateElem.diffDays = diffDays; 
+        updateElem.createdAt = formattedCreatedAt;
         updateElem.myComplaint = true;
         allNewComplaints.push(updateElem);
       }
