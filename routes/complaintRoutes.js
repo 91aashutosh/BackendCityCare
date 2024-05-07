@@ -50,6 +50,7 @@ const upload = multer({ storage: storage });
   router.post('/migrateMediaUrlsToCloudinary', controller.migrateMediaUrlsToCloudinary);
   router.post('/homeComplaintList', controller.homeComplaintList);
   router.post('/upVoteComplaint', auth, controller.upVoteComplaint)
+  router.post('/api_complaint_category_count', controller.api_complaint_category_count);
 
   module.exports = router;
   

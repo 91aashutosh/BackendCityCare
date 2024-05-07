@@ -425,6 +425,33 @@ const upVoteComplaint = async (req, res) => {
   }
 };
 
+const api_complaint_category_count = async (req, res) => {
+  try {
+    let aggregationResult = await Complaint.aggregate([
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 }
+        }
+      }
+    ])
+
+  const labels = aggregationResult.map(item => item._id);
+  const counts = aggregationResult.map(item => item.count);
+
+  res.status(200).send({
+    status: true,
+    message: "count of complaint categorywise",
+    labels,
+    counts
+  })
+
+  }
+  catch(error) {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+}
 
 module.exports = {
   create_new_complaint,
@@ -438,5 +465,6 @@ module.exports = {
   all_complaints_coordinates_category,
   migrateMediaUrlsToCloudinary,
   homeComplaintList,
-  upVoteComplaint
+  upVoteComplaint,
+  api_complaint_category_count
 }
