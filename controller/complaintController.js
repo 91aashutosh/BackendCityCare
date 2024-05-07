@@ -535,5 +535,6 @@ module.exports = {
   upVoteComplaint,
   api_complaint_category_count,
   api_complaint_pincode_count,
-  show_all_alert_pincode_wise
+  show_all_alert_pincode_wise,
+  create_alert
 }
