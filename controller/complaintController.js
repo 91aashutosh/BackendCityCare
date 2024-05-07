@@ -143,6 +143,11 @@ const api_all_complaints = async (req, res) => {
         {
           updateElem.categoryMedia = `public/media/electricity.jpeg`;
         }
+
+        const createdAt = new Date(complaints[i].createdAt);
+        const diffTime = Math.abs(currentDate - createdAt);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        updateElem.diffDays = diffDays; 
         allNewComplaints.push(updateElem);
       }
 
@@ -227,6 +232,11 @@ const api_my_complaints = async (req, res) => {
         {
           updateElem.categoryMedia = `public/media/electricity.jpeg`;
         }
+
+        const createdAt = new Date(complaints[i].createdAt);
+        const diffTime = Math.abs(currentDate - createdAt);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        updateElem.diffDays = diffDays; 
 
         updateElem.myComplaint = true;
         allNewComplaints.push(updateElem);
