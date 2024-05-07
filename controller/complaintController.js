@@ -506,10 +506,21 @@ const show_all_alert_pincode_wise = async (req, res) => {
   try {
     let { pincode } = req.body;
     let allAlerts = await Alert.find({pincode: pincode});
+    const currentDate = new Date();
+    let newAlerts = [];
+    for(let i=0;i<allAlerts.length;i++)
+    {
+      let updateElem = allAlerts[i].toObject();
+      const createdAt = new Date(allAlerts[i].createdAt);
+      const diffTime = Math.abs(currentDate - createdAt);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      updateElem.diffDays = diffDays; 
+      newAlerts.push(updateElem);
+    }
     res.send({
       status: true,
       message: "all alerts are fetched",
-      allAlerts
+      allAlerts: newAlerts
     })
   }
   catch(error)
