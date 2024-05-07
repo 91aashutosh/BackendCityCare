@@ -53,6 +53,7 @@ const upload = multer({ storage: storage });
   router.post('/api_complaint_category_count', controller.api_complaint_category_count);
   router.post('/api_complaint_pincode_count', controller.api_complaint_pincode_count);
   router.post('/create_alert', controller.create_alert);
+  router.post('/show_all_alert_pincode_wise', controller.show_all_alert_pincode_wise);
 
   module.exports = router;
   

@@ -502,6 +502,23 @@ const create_alert = async (req, res) => {
   }
 }
 
+const show_all_alert_pincode_wise = async (req, res) => {
+  try {
+    let { pincode } = req.body;
+    let allAlerts = await Alert.find({pincode: pincode});
+    res.send({
+      status: true,
+      message: "all alerts are fetched",
+      allAlerts
+    })
+  }
+  catch(error)
+  {
+    console.log("error", error);
+    res.status(500).send({ error: 'Internal Server Error' });  
+  }
+}
+
 
 module.exports = {
   create_new_complaint,
@@ -518,5 +535,5 @@ module.exports = {
   upVoteComplaint,
   api_complaint_category_count,
   api_complaint_pincode_count,
-  create_alert
+  show_all_alert_pincode_wise
 }
