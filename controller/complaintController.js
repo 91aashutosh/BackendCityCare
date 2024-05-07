@@ -427,7 +427,12 @@ const upVoteComplaint = async (req, res) => {
 
 const api_complaint_category_count = async (req, res) => {
   try {
+
+    let { category } = req.body;
     let aggregationResult = await Complaint.aggregate([
+      {
+        $match: { "type": category } // Filter complaints by type: category
+      },
       {
         $group: {
           _id: "$status",
@@ -455,7 +460,11 @@ const api_complaint_category_count = async (req, res) => {
 
 const api_complaint_pincode_count = async (req, res) => {
   try {
+    let { category } = req.body;
     let aggregationResult = await Complaint.aggregate([
+      {
+        $match: { "type": category } // Filter complaints by type: category
+      },
       {
         $group: {
           _id: "$locationInfo.pincode",
